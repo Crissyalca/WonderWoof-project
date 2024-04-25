@@ -19,8 +19,6 @@ export default function AddPuppy() {
   const [genderErr, setGenderErr] = useState(false);
   const [weightMsg, setWeightMsg] = useState("");
   const [weightErr, setWeightErr] = useState(false);
-  const [isAlreadyIn, setIsAlreadyIn] = useState(false);
-  const [selectedFile, setSelectedFile] = useState("");
   const [image, setImage] = useState({ preview: "", raw: "" });
   const navigate = useNavigate();
 
@@ -33,8 +31,8 @@ export default function AddPuppy() {
 
       if (res.status === 200) {
         if (json.puppyId) {
-          setIsAlreadyIn(true);
           setPuppyId(json.puppyId);
+          navigate("/PuppiesGallery");
         }
         setUsername(json.username);
         setPuppyname(json.puppyname);
@@ -47,7 +45,7 @@ export default function AddPuppy() {
   }, []);
 
   function handlePhotoPath(event) {
-    setSelectedFile(event.target.files[0]);
+    // setSelectedFile(event.target.files[0]);
     setImage({
       // preview: URL.createObjectURL(event.target.files[0]),
       raw: event.target.files[0],

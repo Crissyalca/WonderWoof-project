@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { imagefrombuffer } from "imagefrombuffer";
-export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
+export default function PuppiesGallery() {
   const [isAdmin, setIsAdmin] = useState();
   const [puppyData, setPuppyData] = useState([]);
   const [username, setUsername] = useState("");
   const [puppyname, setPuppyname] = useState("");
   const [userId, setUserId] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [puppyImage, setPuppyImage] = useState("");
-
-  // const [isAvailableToDelete, setIsAvailableToDelete] = useState(false);
-
   const navigate = useNavigate();
 
   async function deletePuppy(id) {
@@ -33,13 +28,11 @@ export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
         credentials: "include",
       });
       let json = await res.json();
-
       if (res.status === 200) {
         setUserId(json.userId);
         setUsername(json.username);
         setPuppyname(json.puppyname);
         setPuppyData(json.data);
-        setPuppyImage(json.image);
         if (json.admin) {
           setIsAdmin(true);
         }
@@ -113,8 +106,6 @@ export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
         </div>
       </header>
       <main className="home-body">
-        {/* <h3>Wonder Woof</h3> */}
-
         {isAdmin && (
           <div className="form-admin">
             <button>Create</button>
@@ -146,7 +137,6 @@ export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
                     <div className="tab-info-puppy">
                       <img
                         id="puppy-photo"
-                        // src="dogsImages/artu.jpeg"
                         src={`data:image/png;base64, ${puppy.file}`}
                         // src={`data:image/jpeg;charset=utf-8;base64,${puppy.image}`}
                         // src={`data:image/jpeg;base64,${puppy.image}`}
@@ -172,13 +162,8 @@ export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
                             </button>
                           </div>
                         )}
-                        {/* <p>Age: {puppy.age} </p>
-                        <p> </p>
-                        <p> </p>
-                        <p></p> */}
-                        {/* <p>Contact: {puppy.email}</p> */}
                       </div>
-                    </div>{" "}
+                    </div>
                   </section>
                 </>
               );
@@ -211,43 +196,3 @@ export default function PuppiesGallery(/*{ admin, setAdmin }*/) {
     </div>
   );
 }
-// const [url, setUrl] = useState("");
-// const [breed, setBreed] = useState("");
-// const [age, setAge] = useState("");
-// const [gender, setGender] = useState("");
-// const [weight, setWeight] = useState("");
-// const [Description, setDescription] = useState("");
-// const [email, setEmail] = useState("");
-
-// useEffect(() => {
-//   async function call() {
-//     let res = await fetch("http://localhost:3000/logged", {
-//       credentials: "include",
-//     });
-//     let json = await res.json();
-//     console.log(json);
-
-//     if (res.status === 200) {
-//       setUsername(json.username);
-//       setPuppyname(json.puppyname);
-//       setAfterFirstEffect(true);
-//       if (json.admin) {
-//         setIsAdmin(true);
-//       }
-//       getPuppyData();
-//     } else {
-//       navigate("/");
-//     }
-//   }
-//   call();
-// }, []);
-// setUsername(json.username);
-// setPuppyname(json.puppyname);
-// setUrl(json.info.photo);
-// setBreed(json.info.breed);
-// setAge(json.info.age);
-// setGender(json.info.gender);
-// setWeight(json.info.weight);
-// setDescription(json.info.description);
-// setEmail(json.email);
-// }

@@ -45,7 +45,6 @@ export async function getUserNames(email) {
 }
 
 export async function create(name, username, puppyname, email, password) {
-  console.log(password);
   try {
     await connect();
     const res = await client
@@ -60,14 +59,6 @@ export async function create(name, username, puppyname, email, password) {
   }
 }
 
-// export async function uploadedImage( fotoData, imgData) {
-//   await connect();
-//   const res = await client
-//     .db("WonderWoof")
-//     .collection("puppies")
-//     .insertOne({ _id: new ObjectId(userId) });
-// }
-
 export async function addPuppy(
   userId,
   puppyname,
@@ -77,7 +68,6 @@ export async function addPuppy(
   weight,
   description,
   file
-  // upload.single("fileURLToPath")
 ) {
   try {
     await connect();
@@ -91,13 +81,7 @@ export async function addPuppy(
       description,
       file,
     });
-    // const puppyId = info
     const puppyId = info.insertedId;
-    console.log("db riga89 puppyId", info);
-    // const res = await client
-    //   .db("WonderWoof")
-    //   .collection("puppies")
-    //   .findOne({ _id: new ObjectId(userId) });
     await client
       .db("WonderWoof")
       .collection("users")
@@ -105,8 +89,7 @@ export async function addPuppy(
         { _id: new ObjectId(userId) },
         { $set: { puppiesId: puppyId } }
       );
-
-    return [true, info]; // qui devo capire cosa tornare
+    return [true, info];
   } catch (err) {
     return [false, err];
   } finally {
@@ -115,7 +98,6 @@ export async function addPuppy(
 }
 
 export async function getAllPuppies(userId) {
-  console.log("db getAllPuppies 110 ", userId);
   try {
     await connect();
     const user = await client
@@ -136,8 +118,6 @@ export async function getAllPuppies(userId) {
     } else {
       return [user != null, user, [...filteredPuppies]];
     }
-
-    // return [user != null, user, dbPuppies];
   } catch (err) {
     return [false, err];
   } finally {

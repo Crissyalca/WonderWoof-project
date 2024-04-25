@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-export default function Home(/*{ admin, setAdmin }*/) {
+export default function EventsAndActivities() {
   const [isAdmin, setIsAdmin] = useState();
   const [username, setUsername] = useState("");
   const [puppyname, setPuppyname] = useState("");
@@ -34,7 +33,6 @@ export default function Home(/*{ admin, setAdmin }*/) {
     });
     navigate("/");
     setIsAdmin(false);
-    // setAdmin(false);
   }
 
   return (
@@ -166,7 +164,6 @@ export default function Home(/*{ admin, setAdmin }*/) {
           </div>
         </div>
         <div className="footer-disclaimer">
-          {/* <span className="footer-title">Wonder Woof &reg;</span> */}
           <span className="footer-p">
             &copy; 2024 Paws-itivity. All rights reserved.
           </span>

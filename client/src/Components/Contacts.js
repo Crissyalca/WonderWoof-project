@@ -1,7 +1,7 @@
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-export default function Contacts(/*{ admin, setAdmin }*/) {
+export default function Contacts() {
   const [isAdmin, setIsAdmin] = useState();
   const [username, setUsername] = useState("");
   const [puppyname, setPuppyname] = useState("");

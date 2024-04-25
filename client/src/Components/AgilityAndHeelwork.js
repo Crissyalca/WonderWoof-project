@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-export default function Home(/*{ admin, setAdmin }*/) {
+export default function AgilityAndHeelwork() {
   const [isAdmin, setIsAdmin] = useState();
   const [username, setUsername] = useState("");
   const [puppyname, setPuppyname] = useState("");
@@ -34,7 +33,6 @@ export default function Home(/*{ admin, setAdmin }*/) {
     });
     navigate("/");
     setIsAdmin(false);
-    // setAdmin(false);
   }
 
   return (
@@ -77,7 +75,6 @@ export default function Home(/*{ admin, setAdmin }*/) {
         </div>
       </header>
       <main className="home-body" id="secondary-activity">
-        {/* <main className="home-body" id="body-activity"> */}
         <h1>Agility activities and heelworks with Wonder Woof </h1>
         <p>
           The athletic challenge keeps a dog fit, helps prevent obesity,
@@ -93,11 +90,7 @@ export default function Home(/*{ admin, setAdmin }*/) {
             <button>Edit</button>
           </div>
         )}
-        {/* <p>
-          Dear {username && username.toUpperCase()} and{" "}
-          {puppyname && puppyname.toUpperCase()},<br></br> Explore the events on
-          offer for you.
-        </p> */}
+
         <section id="event">
           <div className="events">
             <img
@@ -134,7 +127,6 @@ export default function Home(/*{ admin, setAdmin }*/) {
           </div>
         </div>
         <div className="footer-disclaimer">
-          {/* <span className="footer-title">Wonder Woof &reg;</span> */}
           <span className="footer-p">
             &copy; 2024 Paws-itivity. All rights reserved.
           </span>

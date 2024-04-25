@@ -31,8 +31,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-// Gestisci le richieste OPTIONS
-app.options("*", cors()); // Risponde a tutte le richieste OPTIONS con le intestazioni CORS appropriate
+app.options("*", cors());
 
 import session from "express-session";
 app.use(
@@ -46,26 +45,6 @@ app.use(
   })
 );
 
-//VERIFICA SE USER è AUTENTICATO
-app.get("/logged", async (req, res) => {
-  let [found, names] = await getUserNames(req.session.email);
-
-  if (req.session.logged && found) {
-    res.status(200).json({
-      userId: req.session.userId,
-
-      admin: req.session.admin,
-      puppyname: names.puppyname,
-      username: names.username,
-      puppyId: names.puppyId,
-    });
-  } else {
-    // console.log("server nologged row46:", res.json());
-    res.status(401).json({ msg: "no logged" });
-  }
-  //ragionavo sul next qui
-});
-
 //LOGIN
 app.post("/login", async (req, res) => {
   let [exists, pwIsTrue, resp] = await login(req.body.email, req.body.password);
@@ -76,7 +55,6 @@ app.post("/login", async (req, res) => {
     req.session.logged = true;
     req.session.email = req.body.email;
     req.session.userId = id;
-    // let admin = profile[0].admin === id;
     res.status(200).json({
       msg: "succesfully logged in",
     });
@@ -84,6 +62,23 @@ app.post("/login", async (req, res) => {
     res
       .status(401)
       .json({ msg: "Check your username and password to continue" });
+  }
+});
+
+//VERIFICA SE USER è AUTENTICATO
+app.get("/logged", async (req, res) => {
+  let [found, names] = await getUserNames(req.session.email);
+
+  if (req.session.logged && found) {
+    res.status(200).json({
+      userId: req.session.userId,
+      admin: req.session.admin,
+      puppyname: names.puppyname,
+      username: names.username,
+      puppyId: names.puppyId,
+    });
+  } else {
+    res.status(401).json({ msg: "no logged" });
   }
 });
 
@@ -105,19 +100,10 @@ app.post("/create", async (req, res) => {
 });
 
 //UPLOAD IMAGE
-// app.post("/upload");
 const upload = multer();
-// Limita la dimensione del file a 3 MB
-// {
-//   limits: { fileSize: 7 * 1024 * 1024 },
-// }
 
 //AGGIUNGE CUCCIOLO AL DB
 app.post("/addPuppy", upload.single("file"), async (req, res) => {
-  // console.log("Request file:", JSON.stringify(req.file));
-  // app.post("/addPuppy", upload.single("file"), async (req, res) => {
-  // const id = res._id.toString();
-  // const { breed, age, gender, weight, photo, description } = req.body;
   try {
     const compressedImage = await sharp(req.file.buffer)
       .resize({ width: 500 })
@@ -134,14 +120,9 @@ app.post("/addPuppy", upload.single("file"), async (req, res) => {
       compressedImage
       // puppyData.description,
     );
-    console.log("Request body 143:", puppy.puppyname);
-    console.log("Request file 144:", req.file);
-
     if (puppyProfileIsCreated) {
-      console.log("riga 142 if:", puppyProfileIsCreated, output);
       res.status(201).json({ msg: "puppy added succesfully", output });
     } else {
-      console.log("riga 145 else:", puppyProfileIsCreated, output);
       res.status(400).json({ error: "failed to add puppy", details: output });
     }
   } catch (err) {
@@ -158,16 +139,8 @@ app.get("/details", async (req, res) => {
       if (found) {
         let encodedImage = null;
         if (data.file) {
-          // if (data[0].file) {
-          // Codifica il file in base64 utilizzando la funzione base64Encode
-          // encodedImage = base64Encode(data[0].file);
           encodedImage = base64Encode(data.file);
         }
-        console.log("Request body 171:", encodedImage);
-        // const fileBuffer = data.file.buffer;
-        // const encodedImage = fileBuffer.toString("base64");
-        // const encodedImage = Buffer.from(data.file).toString(`base64`);
-
         res.status(200).json({
           userId: req.session.userId,
           email: req.session.email,
@@ -178,13 +151,11 @@ app.get("/details", async (req, res) => {
           image: encodedImage,
         });
       } else {
-        console.log("Error getting puppy details primo else", data);
         res
           .status(404)
           .json({ msg: "something went wrong, no puppy details found" });
       }
     } else {
-      // console.log("server nologged row46:", res.json());
       res.status(401).json({ msg: "no logged" });
     }
   } catch (error) {
@@ -218,19 +189,3 @@ app.put("/logout", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-// req.body.userId,
-// req.body.puppyname,
-// req.body.breed,
-// req.body.age,
-// req.body.gender,
-// req.body.weight,
-// req.body.photo,
-// req.body.description
-// puppyname: names.puppyname,
-// username: names.username,
-// breed: data.breed,
-// age: data.age,
-// gender: data.gender,
-// weight: data.weight,
-// url: data.photo,
-// description: data.description,
